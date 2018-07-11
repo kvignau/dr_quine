@@ -1,5 +1,4 @@
-; %define STR "section .data%3$cstr:%3$c.string db %2$c%1$s%2$c%3$c%3$csection .text%3$cglobal start%3$cglobal _main%3$cextern _printf%3$c%3$cstart:%3$ccall _main%3$cret%3$c%3$c_main:%3$c; Com 2%3$cpush rbp%3$cmov rbp, rsp%3$csub rsp, 16%3$clea rdi, [rel str.string]%3$clea rsi, [rel str.string]%3$cmov rdx, 34%3$cmov rcx, 10%3$ccall _printf%3$ccall _end%3$c%3$c_end:%3$cleave%3$cret%3$c"
-%define STR "%4$cdefine STR %2$c%3$s%2$c%1$c%4$cdefine MACH_SYSCALL(nb) 0x2000000 | nb%1$c%4$cdefine NO_MAIN _main%1$c%1$csection .data%1$cstrings:%1$c.file db %2$cGrace_kid.s%2$c, 0%1$c.prog db STR, 0%1$c"
+%define STR "%4$cdefine STR %2$c%3$s%2$c%1$c%4$cdefine MACH_SYSCALL(nb) 0x2000000 | nb%1$c%4$cdefine NO_MAIN _main%1$c%1$csection .data%1$cstrings:%1$c.file db %2$cGrace_kid.s%2$c, 0%1$c.prog db STR, 0%1$c%1$csection .text%1$cglobal start%1$cglobal NO_MAIN%1$cextern _dprintf%1$c%1$cstart:%1$ccall NO_MAIN%1$cret%1$c%1$cNO_MAIN:%1$c; Com 1%1$cpush rbp%1$cmov rbp, rsp%1$csub rsp, 16%1$c%1$clea rdi, [rel strings.file]%1$cmov rsi, 0x0202%1$cmov rdx, 644o%1$cmov rax, MACH_SYSCALL(5)%1$csyscall%1$cjc error%1$cmov [rsp], rax%1$c%1$cmov rdi, rax%1$clea rsi, [rel strings.prog]%1$cmov rdx, 10%1$cmov rcx, 34%1$clea r8, [rel strings.prog]%1$cmov r9, 37%1$ccall _dprintf%1$cjc error%1$c%1$cmov rdi, [rsp]%1$cmov rax, MACH_SYSCALL(6)%1$csyscall%1$cjc error%1$cleave%1$cret%1$c%1$cerror:%1$cmov rax, 1%1$cleave%1$cret%1$c"
 %define MACH_SYSCALL(nb) 0x2000000 | nb
 %define NO_MAIN _main
 
@@ -23,15 +22,14 @@ push rbp
 mov rbp, rsp
 sub rsp, 16
 
-; OPEN FILE
 lea rdi, [rel strings.file]
 mov rsi, 0x0202
 mov rdx, 644o
 mov rax, MACH_SYSCALL(5)
 syscall
+jc error
 mov [rsp], rax
 
-; WRITE IN FILE
 mov rdi, rax
 lea rsi, [rel strings.prog]
 mov rdx, 10
@@ -39,12 +37,16 @@ mov rcx, 34
 lea r8, [rel strings.prog]
 mov r9, 37
 call _dprintf
+jc error
 
-; CLOSE FILE
 mov rdi, [rsp]
 mov rax, MACH_SYSCALL(6)
 syscall
-
+jc error
 leave
-; mov rax, 0x0
+ret
+
+error:
+mov rax, 1
+leave
 ret
