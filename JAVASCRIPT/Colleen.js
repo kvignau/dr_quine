@@ -1,6 +1,6 @@
 // com 1
 function ft_print(){
-    return ft_print.toString() + "\nfunction main(){\n// com 1\nft_print()\n}\nmain();\n";
+    console.log("// com 1\n" + ft_print.toString() + "\n" + main.toString() + "\nmain();");
 }
 function main(){
 	// com 2
