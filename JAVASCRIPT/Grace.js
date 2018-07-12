@@ -4,5 +4,5 @@
 		if (err)
 			return console.log(err);
 	});
-	// com 2
+	// com 1
 })()
