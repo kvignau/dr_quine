@@ -43,7 +43,7 @@ clean:
 fclean: clean
 	@/bin/rm -rf Colleen/Colleen
 	@/bin/rm -rf Grace/Grace Grace/Grace_kid.s
-	@/bin/rm -rf Sully/Sully Sully/Sully_*.s
+	@/bin/rm -rf Sully/Sully Sully/Sully_*
 
 re: fclean all
 
