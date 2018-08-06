@@ -45,6 +45,9 @@ fclean: clean
 	@/bin/rm -rf Grace/Grace Grace/Grace_kid.s
 	@/bin/rm -rf Sully/Sully Sully/Sully_*
 
-re: fclean all
+re: fclean $(OBJ_C) $(OBJ_G) $(OBJ_S)
+	gcc $(FLAG) $(OBJ_C) -o Colleen/Colleen
+	gcc $(FLAG) $(OBJ_G) -o Grace/Grace
+	gcc $(FLAG) $(OBJ_S) -o Sully/Sully
 
 .PHONY: all clean fclean re
